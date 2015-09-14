@@ -1,0 +1,10 @@
+
+*.pyc
+
+DummyPlayer/.project
+
+DummyPlayer/.pydevproject
+
+*.pptx
+
+*.gif
