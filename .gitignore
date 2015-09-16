@@ -8,3 +8,11 @@ DummyPlayer/.pydevproject
 *.pptx
 
 *.gif
+
+bin
+
+lib
+
+include
+
+.Python
