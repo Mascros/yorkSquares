@@ -57,8 +57,33 @@ class TestTraverse(unittest.TestCase):
         edge_setter(random_edges, const.UNPLAYED, board)
 
 
+    def test_non_chain(self):
+        """
+        should return none if the square is not in a chain
+        """
+        self.assertEqual(finder.traverse(6, board), None)
+
 # Find all chains given a board (this one needs to find the start of the chain)
 class TestFindAll(unittest.TestCase):
     @unittest.skip("Not implemented")
     def test_something(self):
         pass
+
+class TestSquareOverEdge(unittest.TestCase):
+    def test_left(self):
+        """
+        should return the square on the other side of the edge traversing left
+        """
+        self.assertEqual(finder._square_over_edge(9, 1, board), 0)
+    
+    def test_down(self):
+        """
+        should return the square on the other side of the edge traversing down
+        """
+        self.assertEqual(finder._square_over_edge(20, 3, board), 12)
+
+    def test_edge(self):
+        """
+        should return None if there is no square on the other side
+        """
+        self.assertEqual(finder._square_over_edge(8, 0, board), None)
