@@ -82,7 +82,10 @@ class ChainFinder():
         else:
             growing_chain.append(traversable_squares[0])
             first_chain = self._move(growing_chain, board)
-            growing_chain.append(traversable_squares[1])
-            second_chain = self._move(growing_chain, board)
-            first_chain.append(square)
-            return first_chain + second_chain
+
+            # If its a loop chain, the second traversable square will already have been found
+            if traversable_squares[1] not in growing_chain:  
+                growing_chain.append(traversable_squares[1])
+                second_chain = self._move(growing_chain, board)
+                
+            return growing_chain
