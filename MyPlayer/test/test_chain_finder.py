@@ -2,7 +2,7 @@ import unittest
 import const
 from game_board import GameBoardADT
 from chain_finder import ChainFinder
-from helper import edge_setter
+from helper import edge_setter, unplay_all
 
 
 finder = ChainFinder()
@@ -14,6 +14,7 @@ class TestTraverse(unittest.TestCase):
         """
         should return a list of one square when the chain is one long
         """
+        unplay_all(board)
         board.setEdgeState(66, const.PLAYED)
         board.setEdgeState(71, const.PLAYED)
         self.assertEqual([37], finder.traverse(37, board))
@@ -25,6 +26,8 @@ class TestTraverse(unittest.TestCase):
         """
         should return all the squares in the chain, including the one given, even when starting in the middle of the chain
         """
+        unplay_all(board)
+
         # Set some random edges to played
         random_edges = (14, 33, 59, 60, 70, 71)
         edge_setter(random_edges, const.PLAYED, board)
@@ -35,6 +38,7 @@ class TestTraverse(unittest.TestCase):
         edge_setter(chain_edges, const.PLAYED, board)
         
         traversal = finder.traverse(11, board)
+        self.assertEqual(len(traversal), len(square_ids))
         for square in square_ids:
             self.assertIn(square, traversal)
 
@@ -48,6 +52,8 @@ class TestTraverse(unittest.TestCase):
         """
         should return all the squares in the chain, including the one given
         """
+        unplay_all(board)
+
         # Set some random edges to played
         random_edges = (14, 33, 59, 60, 70, 71)
         edge_setter(random_edges, const.PLAYED, board)
@@ -58,6 +64,7 @@ class TestTraverse(unittest.TestCase):
         edge_setter(chain_edges, const.PLAYED, board)
         
         traversal = finder.traverse(15, board)
+        self.assertEqual(len(traversal), len(square_ids))
         for square in square_ids:
             self.assertIn(square, traversal)
 
@@ -71,10 +78,13 @@ class TestTraverse(unittest.TestCase):
         """
         should be able to return squares from a loop of a square chain
         """
+        unplay_all(board)
+
         edges = (3, 4, 13, 30, 38, 37, 28, 11)
         squares = (3, 4, 12, 13)
         edge_setter(edges, const.PLAYED, board)
         traversal = finder.traverse(3, board)
+        self.assertEqual(len(traversal), len(squares))
         for square in squares:
             self.assertIn(square, traversal)
 
@@ -85,11 +95,31 @@ class TestTraverse(unittest.TestCase):
         """
         should be able to return squares from a loop of a rectangular chain
         """
+        unplay_all(board)
+
         # 3 x 2 rectangle, make sure edge count is always satisfied
         edges = (3, 4, 5, 14, 31, 39, 38, 37, 28, 11, 21)
         squares = (3, 4, 5, 14, 13, 12)
         edge_setter(edges, const.PLAYED, board)
         traversal = finder.traverse(3, board)
+        self.assertEqual(len(traversal), len(squares))
+        for square in squares:
+            self.assertIn(square, traversal)
+
+        edge_setter(edges, const.UNPLAYED, board)
+
+
+    def test_t_junction(self):
+        """
+        should stop at a T junction
+        """
+        unplay_all(board)
+
+        edges = (21,38,22,39,14,15,32,46,47)
+        squares = (13,14)
+        edge_setter(edges, const.PLAYED, board)
+        traversal = finder.traverse(13, board)
+        self.assertEqual(len(traversal), len(squares))
         for square in squares:
             self.assertIn(square, traversal)
 
