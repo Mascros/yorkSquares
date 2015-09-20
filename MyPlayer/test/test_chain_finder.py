@@ -126,6 +126,23 @@ class TestTraverse(unittest.TestCase):
         edge_setter(edges, const.UNPLAYED, board)
 
 
+    def test_X_junction(self):
+        """
+        should stop at a X junction
+        """
+        unplay_all(board)
+
+        edges = (21,38,22,39,14,15,24,41,46,47)
+        squares = (13,14)
+        edge_setter(edges, const.PLAYED, board)
+        traversal = finder.traverse(13, board)
+        self.assertEqual(len(traversal), len(squares))
+        for square in squares:
+            self.assertIn(square, traversal)
+
+        edge_setter(edges, const.UNPLAYED, board)
+
+
 # Find all chains given a board
 class TestFindAll(unittest.TestCase):
     @unittest.skip("Not implemented")
