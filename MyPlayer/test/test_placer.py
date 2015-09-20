@@ -2,10 +2,62 @@ import unittest
 import const
 from game_board import GameBoardADT
 from placer import Placer
+from helper import unplay_all
 
 
 placer = Placer()
 board = GameBoardADT()
+
+
+class TestGetSquareNoOfPlayed(unittest.TestCase):
+    def test_with_zero(self):
+        """
+        should return 0 when the given square has 0 played edges
+        """
+        unplay_all(board)
+        self.assertEqual(placer._get_square_no_of_played(5, board), 0)
+
+
+    def test_with_one(self):
+        """
+        should return 1 when the given square has 1 played edges
+        """
+        unplay_all(board)
+        board.setEdgeState(13, const.PLAYED)
+        self.assertEqual(placer._get_square_no_of_played(5, board), 1)
+
+
+    def test_with_two(self):
+        """
+        should return 2 when the given square has 2 played edges
+        """
+        unplay_all(board)
+        board.setEdgeState(13, const.PLAYED)
+        board.setEdgeState(14, const.PLAYED)
+        self.assertEqual(placer._get_square_no_of_played(5, board), 2)
+
+
+    def test_with_three(self):
+        """
+        should return 3 when the given square has 3 played edges
+        """
+        unplay_all(board)
+        board.setEdgeState(13, const.PLAYED)
+        board.setEdgeState(14, const.PLAYED)
+        board.setEdgeState(22, const.PLAYED)
+        self.assertEqual(placer._get_square_no_of_played(5, board), 3)
+
+
+    def test_with_four(self):
+        """
+        should return 4 when the given square has 4 played edges
+        """
+        unplay_all(board)
+        board.setEdgeState(13, const.PLAYED)
+        board.setEdgeState(14, const.PLAYED)
+        board.setEdgeState(22, const.PLAYED)
+        board.setEdgeState(5, const.PLAYED)
+        self.assertEqual(placer._get_square_no_of_played(5, board), 4)
 
 
 class TestCheckSafe(unittest.TestCase):
