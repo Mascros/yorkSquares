@@ -61,14 +61,11 @@ class TestGetSquareNoOfPlayed(unittest.TestCase):
 
 
 class TestCheckSafe(unittest.TestCase):
-    def test_when_safe_simple(self):
+    def test_when_safe(self):
         """
-        should return safe when placing an edge would not give anyone a square
+        should return safe when placing an edge would not give the opponent a square
         """
         unplay_all(board)
-        # Check with 0,0 1,0 0,1 and 1,1 edges on each side
-        # Also check when one side is not part of the board
-        # so 0,0 means the squares on both sides of the edge have no edges
 
         # 0 Left & Right
         self.assertEqual(placer.check_safe(9, board), True)
@@ -141,6 +138,58 @@ class TestCheckSafe(unittest.TestCase):
         board.setEdgeState(edge, const.PLAYED)
         self.assertEqual(placer.check_safe(8, board), True)
         board.setEdgeState(edge, const.UNPLAYED)
+
+
+    def test_when_unsafe(self):
+        """
+        should return unsafe when placing an edge would give the opponent a square
+        """
+        unplay_all(board)
+
+        edge1 = 30
+        edge2 = 22
+        edge3 = 50
+        board.setEdgeState(edge1, const.PLAYED)
+        board.setEdgeState(edge2, const.PLAYED)
+        board.setEdgeState(edge3, const.PLAYED)
+        self.assertEqual(placer.check_safe(39, board), False)
+        board.setEdgeState(edge1, const.UNPLAYED)
+        board.setEdgeState(edge2, const.UNPLAYED)
+        board.setEdgeState(edge3, const.UNPLAYED)
+
+        edge1 = 30
+        edge2 = 22
+        edge3 = 32
+        board.setEdgeState(edge1, const.PLAYED)
+        board.setEdgeState(edge2, const.PLAYED)
+        board.setEdgeState(edge3, const.PLAYED)
+        self.assertEqual(placer.check_safe(31, board), False)
+        board.setEdgeState(edge1, const.UNPLAYED)
+        board.setEdgeState(edge2, const.UNPLAYED)
+        board.setEdgeState(edge3, const.UNPLAYED)
+
+        edge1 = 32
+        edge2 = 24
+        board.setEdgeState(edge1, const.PLAYED)
+        board.setEdgeState(edge2, const.PLAYED)
+        self.assertEqual(placer.check_safe(33, board), False)
+        board.setEdgeState(edge1, const.UNPLAYED)
+        board.setEdgeState(edge2, const.UNPLAYED)
+
+
+        edge1 = 30
+        edge2 = 22
+        edge3 = 32
+        edge4 = 23
+        board.setEdgeState(edge1, const.PLAYED)
+        board.setEdgeState(edge2, const.PLAYED)
+        board.setEdgeState(edge3, const.PLAYED)
+        board.setEdgeState(edge4, const.PLAYED)
+        self.assertEqual(placer.check_safe(31, board), False)
+        board.setEdgeState(edge1, const.UNPLAYED)
+        board.setEdgeState(edge2, const.UNPLAYED)
+        board.setEdgeState(edge3, const.UNPLAYED)
+        board.setEdgeState(edge4, const.UNPLAYED)
 
 
 # Should check to see if there are any free sqaures available for taking safely
