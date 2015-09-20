@@ -65,16 +65,15 @@ class TestCheckSafe(unittest.TestCase):
         """
         should return safe when placing an edge would not give anyone a square
         """
+        unplay_all(board)
         # Check with 0,0 1,0 0,1 and 1,1 edges on each side
         # Also check when one side is not part of the board
         # so 0,0 means the squares on both sides of the edge have no edges
 
         # 0 Left & Right
-        # Don't Need to set any edges
         self.assertEqual(placer.check_safe(9, board), True)
 
         # 0 Top & Bottom
-        # Dont need to set any edges
         self.assertEqual(placer.check_safe(18, board), True)
 
         # 1 Left Parralel 
