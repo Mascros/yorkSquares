@@ -3,11 +3,12 @@ import const
 from game_board import GameBoardADT
 from placer import Placer
 
+
 placer = Placer()
 board = GameBoardADT()
 
-class TestCheckSafe(unittest.TestCase):
 
+class TestCheckSafe(unittest.TestCase):
     def test_when_safe_simple(self):
         """
         should return safe when placing an edge would not give anyone a square
@@ -89,31 +90,6 @@ class TestCheckSafe(unittest.TestCase):
         board.setEdgeState(edge, const.PLAYED)
         self.assertEqual(placer.check_safe(8, board), True)
         board.setEdgeState(edge, const.UNPLAYED)
-
-
-    @unittest.skip("Not implemented")
-    def test_when_safe_gain(self):
-        # We get a chain
-        # We get a chain they get one square
-        # We get a chain they get a shorter chain
-        # We get a chain they get an equal chain
-        pass
-
-
-    @unittest.skip("Not implemented")
-    def test_when_unsafe_simple(self):
-        # Also check when one side is not part of the board
-        # Check with 2 edges on one side (for both sides) and 2 edges on both sides
-        # also check for chains
-        pass
-
-
-    @unittest.skip("Not implemented")
-    def test_when_unsafe_gain(self):
-        # We get nothing they get one
-        # We get one they get a chain
-        # We get a chain they get a bigger chain
-        pass
 
 
 # Should check to see if there are any free sqaures available for taking safely
