@@ -21,8 +21,10 @@ class Placer():
         if type(adj_squares) is int:
             if self._get_square_no_of_played(adj_squares, board) < 2:
                 return True
+            else:
+                return False
         else:
             for adj_square in adj_squares:
-                if self._get_square_no_of_played(adj_square, board) > 2:
+                if self._get_square_no_of_played(adj_square, board) == 2:
                     return False
             return True
