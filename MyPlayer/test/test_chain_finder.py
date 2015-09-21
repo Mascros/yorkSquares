@@ -156,7 +156,7 @@ class TestSquareOverEdge(unittest.TestCase):
         should return the square on the other side of the edge traversing left
         """
         unplay_all(board)
-        
+
         self.assertEqual(finder._square_over_edge(9, 1, board), 0)
     
 
@@ -179,7 +179,7 @@ class TestSquareOverEdge(unittest.TestCase):
 
 
 class TestGetTraversableSquares(unittest.TestCase):
-    def test_all(self):
+    def test_none(self):
         """
         should return the reachable squares of a square
         """
@@ -189,14 +189,28 @@ class TestGetTraversableSquares(unittest.TestCase):
         edges = (0,9,17)
         edge_setter(edges, const.PLAYED, board)
         self.assertEqual(finder._get_traversable_squares(0, board), [])
+
+    def test_one_edge_of_board(self):
+        """
+        should return the traversable square in a list
+        """
+        unplay_all(board)
         
-        # Square zero, edges 0,8,9 unplayed
-        edges = (0,9)
-        edge_setter(edges, const.UNPLAYED, board)
+        edges = (0,17,1,10)
+        edge_setter(edges, const.PLAYED, board)
         result = finder._get_traversable_squares(0, board)
         self.assertEqual([1], result)
-        board.setEdgeState(17, const.UNPLAYED)
 
+    def test_one_edge_count(self):
+        """
+        should return the traversable square in a list
+        """
+        unplay_all(board)
+        
+        edges = (27,28,43,44)
+        edge_setter(edges, const.PLAYED, board)
+        result = finder._get_traversable_squares(11, board)
+        self.assertEqual([20], result)
 
 class TestFilterEdgeCount(unittest.TestCase):
     def test_needs_better_name(self):
