@@ -56,14 +56,31 @@ class TestGetMove(unittest.TestCase):
                 self.assertEqual(edge, result)
 
 
+    def test_end_all_placed(self):
+        """
+        should return None when all of const.STARTERS have been placed
+        """
+        unplay_all(board)
+
+        edge_setter(const.STARTERS, const.PLAYED, board)
+
+        self.assertEqual(placer.get_move(board), None)
 
 
-    @unittest.skip("Not Started")
-    def test_end(self):
+    def test_end_unsafe(self):
         """
-        should return None when all of const.STARTERS have been places, or can no longer be placed
+        should return None when no const.STARTERS can be placed safely
         """
-        pass
+        unplay_all(board)
+
+        edges = list(const.STARTERS)
+        edges.remove(20)
+        edges.append(11)
+        edges.append(12)
+
+        edge_setter(edges, const.PLAYED, board)
+
+        self.assertEqual(placer.get_move(board), None)
 
 
     @unittest.skip("Not Started")
