@@ -173,9 +173,9 @@ class TestSquareOverEdge(unittest.TestCase):
 
 
 class TestGetTraversableSquares(unittest.TestCase):
-    def test_needs_better_name(self):
+    def test_all(self):
         """
-        should return the traversable edges of a square
+        should return the reachable squares of a square
         """
         # Square zero, edge 8 unplayed
         edges = (0,9,17)
