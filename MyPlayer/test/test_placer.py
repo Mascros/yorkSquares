@@ -2,7 +2,7 @@ import unittest
 import const
 from game_board import GameBoardADT
 from placer import Placer
-from helper import unplay_all
+from helper import unplay_all, edge_setter
 
 
 placer = Placer()
@@ -194,8 +194,46 @@ class TestCheckSafe(unittest.TestCase):
 
 # Should check to see if there are any free sqaures available for taking safely
 # Remember to prioritise taking chains over 2 squares (double cross) over 1 square
-class TestFreeSquare(unittest.TestCase):
+class TestGetFreeSquares(unittest.TestCase):
     @unittest.skip("Not implemented")
-    def test_something(self):
-        pass
-        
+    def test_none(self):
+        """
+        should return none when there are no free sqaures
+        """
+        unplay_all(board)
+
+        edges = (0,1,19,12,31,40,71,66,61,67)
+        edge_setter(edges, const.PLAYED, board)
+
+        self.assertEqual(placer.get_free_squares(board), None)
+
+
+
+
+    def test_one(self):
+        """
+        should return the free square in an array (for consistancey)
+        """
+        unplay_all(board)
+
+        edges = (0,1,19,12,31,40,71,66,61,67,56,57)
+        edge_setter(edges, const.PLAYED, board)
+
+        self.assertEqual(placer.get_free_squares(board), [31])
+
+
+    def test_many(self):
+        """
+        should return all the free squares
+        """
+        unplay_all(board)
+
+        edges = (0,1,19,12,31,40,71,66,61,67,56,57,62,58,63,52,53)
+        edge_setter(edges, const.PLAYED, board)
+
+        free_squares = placer.get_free_squares(board)
+
+        self.assertIn(27, free_squares)
+        self.assertIn(33, free_squares)
+        self.assertIn(31, free_squares)
+        self.assertNotIn(37, free_squares)
