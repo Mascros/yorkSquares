@@ -1,6 +1,10 @@
 import unittest
 import const
 from start_of_game_placer import StartOfGamePlacer
+from game_board import GameBoardADT
+from helper import unplay_all, edge_setter
+
+board = GameBoardADT()
 placer = StartOfGamePlacer()
 
 
@@ -8,28 +12,32 @@ class TestGetMove(unittest.TestCase):
     def test_no_block(self):
         """
         should return each edge const.STARTERS, in order, if the opponent has not played any of those edges or any edges preventing us from doing so without giving the opponent a square
-        """
-        # Convert to list so we can use .remove()
-        unplayed = list(range(72))
-        
-        # Get rid of some random non starter edges
-        unplayed.remove(1)
-        unplayed.remove(12)
-        unplayed.remove(50)
+        """        
+        unplay_all(board)
 
-        # Check it returns the right ones
+        random_edges = (1,12,50)
+        edge_setter(random_edges, const.PLAYED, board)
+
         for edge in const.STARTERS:
-            result = placer.get_move(unplayed)
-            unplayed.remove(result)
+            result = placer.get_move(board)
+            board.setEdgeState(result, const.PLAYED)
             self.assertEqual(edge, result)
 
 
-    @unittest.skip("Not Started")
     def test_help(self):
         """
         should return edges in const.STARTERS, in order, skipping those the opponent has placed for us
         """
-        pass
+        unplay_all(board)
+        
+        edges = (1,12,50,20,31)
+        edge_setter(edges, const.PLAYED, board)
+
+        for edge in const.STARTERS:
+            if edge not in edges:
+                result = placer.get_move(board)
+                board.setEdgeState(result, const.PLAYED)
+                self.assertEqual(edge, result)
 
 
     @unittest.skip("Not Started")
