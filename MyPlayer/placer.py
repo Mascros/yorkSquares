@@ -28,3 +28,16 @@ class Placer():
                 if self._get_square_no_of_played(adj_square, board) == 2:
                     return False
             return True
+
+
+    def get_free_squares(self, board):
+        free_squares = []
+        for square in board.Squares:
+            played_count = 0
+            for edge in board.Squares[square]:
+                if board.getEdgeState(edge) == const.PLAYED:
+                    played_count += 1
+            if played_count == 3:
+                free_squares.append(square)
+
+        return free_squares
