@@ -155,6 +155,8 @@ class TestSquareOverEdge(unittest.TestCase):
         """
         should return the square on the other side of the edge traversing left
         """
+        unplay_all(board)
+        
         self.assertEqual(finder._square_over_edge(9, 1, board), 0)
     
 
@@ -162,6 +164,8 @@ class TestSquareOverEdge(unittest.TestCase):
         """
         should return the square on the other side of the edge traversing down
         """
+        unplay_all(board)
+
         self.assertEqual(finder._square_over_edge(20, 3, board), 12)
 
 
@@ -169,6 +173,8 @@ class TestSquareOverEdge(unittest.TestCase):
         """
         should return None if there is no square on the other side
         """
+        unplay_all(board)
+
         self.assertEqual(finder._square_over_edge(8, 0, board), None)
 
 
@@ -177,6 +183,8 @@ class TestGetTraversableSquares(unittest.TestCase):
         """
         should return the reachable squares of a square
         """
+        unplay_all(board)
+
         # Square zero, edge 8 unplayed
         edges = (0,9,17)
         edge_setter(edges, const.PLAYED, board)
@@ -195,6 +203,8 @@ class TestFilterEdgeCount(unittest.TestCase):
         """
         should return only squares which have 2 or more edges played
         """
+        unplay_all(board)
+
         edges = (0, 1, 10, 2, 11)
         edge_setter(edges, const.PLAYED, board)
 
@@ -211,6 +221,8 @@ class TestFilterInChain(unittest.TestCase):
         """
         should return all the squares passed
         """
+        unplay_all(board)
+
         squares = (5,14,15)
         result = finder._filter_in_chain(squares, [])
         for square in squares:
@@ -221,6 +233,8 @@ class TestFilterInChain(unittest.TestCase):
         """
         should return all those passed, except those in the chain
         """
+        unplay_all(board)
+
         squares = (5,14,15,20)
         chain = (12, 15, 6, 5)
         result = finder._filter_in_chain(squares, chain)
