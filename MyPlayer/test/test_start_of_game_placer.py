@@ -81,19 +81,3 @@ class TestGetMove(unittest.TestCase):
         edge_setter(edges, const.PLAYED, board)
 
         self.assertEqual(placer.get_move(board), None)
-
-
-    @unittest.skip("Not Started")
-    def test_block(self):
-        """
-        should return as many edges as possible from const.STARTERS, in order, missing those which would let the opponent create a square
-        """
-        pass
-
-
-    @unittest.skip("Not Started")
-    def test_never_returns_played(self):
-        """
-        should never return an edge which has already been played
-        """
-        pass
