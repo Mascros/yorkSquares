@@ -40,12 +40,22 @@ class TestGetMove(unittest.TestCase):
                 self.assertEqual(edge, result)
 
 
-    @unittest.skip("Not Started")
     def test_combo(self):
         """
         should return as many edges as possible from const.STARTERS, in order, missing those which would let the opponent create a square, skipping those that the opponent has placed for us
         """
-        pass
+        unplay_all(board)
+        
+        edges = (1,12,50,20,31,51,57,67)
+        edge_setter(edges, const.PLAYED, board)
+
+        for edge in const.STARTERS:
+            if edge not in edges and edge != 56:
+                result = placer.get_move(board)
+                board.setEdgeState(result, const.PLAYED)
+                self.assertEqual(edge, result)
+
+
 
 
     @unittest.skip("Not Started")
