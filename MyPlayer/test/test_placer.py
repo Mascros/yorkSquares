@@ -198,14 +198,14 @@ class TestGetFreeSquares(unittest.TestCase):
     @unittest.skip("Not implemented")
     def test_none(self):
         """
-        should return none when there are no free sqaures
+        should return [] when there are no free sqaures
         """
         unplay_all(board)
 
         edges = (0,1,19,12,31,40,71,66,61,67)
         edge_setter(edges, const.PLAYED, board)
 
-        self.assertEqual(placer.get_free_squares(board), None)
+        self.assertEqual(placer.get_free_squares(board), [])
 
 
 
