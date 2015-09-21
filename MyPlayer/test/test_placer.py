@@ -195,7 +195,6 @@ class TestCheckSafe(unittest.TestCase):
 # Should check to see if there are any free sqaures available for taking safely
 # Remember to prioritise taking chains over 2 squares (double cross) over 1 square
 class TestGetFreeSquares(unittest.TestCase):
-    @unittest.skip("Not implemented")
     def test_none(self):
         """
         should return [] when there are no free sqaures
