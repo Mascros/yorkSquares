@@ -89,3 +89,24 @@ class ChainFinder():
                 second_chain = self._move(growing_chain, board)
                 
             return growing_chain
+
+
+    def find_all(self, board):
+        chains = []
+        for square in board.Squares:
+            played_count = 0
+            for edge in board.Squares[square]:
+                if board.getEdgeState(edge) == const.PLAYED:
+                    played_count += 1
+
+            if played_count == 2 or played_count == 3:
+                in_a_chain = False
+                for chain in chains:
+                    if square in chain:
+                        in_a_chain = True
+                        break
+
+                if not in_a_chain:
+                    chains.append(self.traverse(square, board))
+
+        return chains
