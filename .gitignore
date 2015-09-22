@@ -18,3 +18,5 @@ include
 .Python
 
 pip-selfcheck.json
+
+MyPlayer/.coverage

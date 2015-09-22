@@ -30,9 +30,6 @@ class ChainFinder():
             if other_square != None:
                 traversable_squares.append(other_square)
 
-        if len(traversable_squares) > 2:
-            raise ValueError("The given square has not got enough played edges to be in a chain")
-
         return self._filter_edge_count(traversable_squares, board)
 
 
