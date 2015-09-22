@@ -143,11 +143,46 @@ class TestTraverse(unittest.TestCase):
         edge_setter(edges, const.UNPLAYED, board)
 
 
-# Find all chains given a board
 class TestFindAll(unittest.TestCase):
-    @unittest.skip("Not implemented")
-    def test_needs_writing(self):
-        pass
+    def test_no_chains(self):
+        """
+        should return empty list if there are no chains
+        """
+        unplay_all(board)
+
+        edges = (0,3,4,7,33,45,49,58,62,63,68)
+        edge_setter(edges, const.PLAYED, board)
+
+        self.assertEqual(finder.find_all(board), [])
+
+
+    def test_some_chains(self):
+        """
+        should return all the chains in a list ignoring squares which arent in a chain or that have been taken
+        """
+        unplay_all(board)
+
+        # Chains 0, 1 10 19 20, 23 30
+        edges = (0,17,9,10,26,27,42,48,36,49,45,46,55,56,66,7,15,16,24)
+        edge_setter(edges, const.PLAYED, board)
+
+        result = finder.find_all(board)
+
+        self.assertEqual(len(result), 3)
+
+        for chain in result:
+            if len(chain) == 1:
+                self.assertEqual(chain, [0])
+            elif len(chain) == 4:
+                self.assertIn(1, chain)
+                self.assertIn(10, chain)
+                self.assertIn(19, chain)
+                self.assertIn(20, chain)
+            elif len(chain) == 2:
+                self.assertIn(23, chain)
+                self.assertIn(39, chain)
+            else:
+                self.assertFail("Chains were not the right length")
 
 
 class TestSquareOverEdge(unittest.TestCase):
