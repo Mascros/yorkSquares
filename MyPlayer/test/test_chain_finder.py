@@ -168,11 +168,12 @@ class TestFindAll(unittest.TestCase):
 
         result = finder.find_all(board)
 
-        self.assertEqual(len(result), 3)
+        self.assertEqual(len(result), 5)
 
+        one_chains = []
         for chain in result:
             if len(chain) == 1:
-                self.assertEqual(chain, [0])
+                one_chains.append(chain)
             elif len(chain) == 4:
                 self.assertIn(1, chain)
                 self.assertIn(10, chain)
@@ -180,9 +181,16 @@ class TestFindAll(unittest.TestCase):
                 self.assertIn(20, chain)
             elif len(chain) == 2:
                 self.assertIn(23, chain)
-                self.assertIn(39, chain)
+                self.assertIn(30, chain)
             else:
                 self.assertFail("Chains were not the right length")
+
+        self.assertEqual(len(one_chains), 3)
+        self.assertIn([0], one_chains)
+        self.assertIn([9], one_chains)
+        self.assertIn([11], one_chains)
+
+
 
 
 class TestSquareOverEdge(unittest.TestCase):
