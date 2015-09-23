@@ -334,7 +334,7 @@ class TestFindEdgeChains(unittest.TestCase):
         edges.append(61)
 
         result = finder.find_edge_chains(board)
-        self.assertEqual(len(result), 5)
+        self.assertEqual(len(result), 6)
 
         six_chains = []
 
@@ -357,6 +357,8 @@ class TestFindEdgeChains(unittest.TestCase):
                 self.assertIn(34, chain)
             elif chain_length == 6:
                 six_chains.append(chain)
+            elif chain_length == 1:
+                self.assertEqual([31, chain])
             else:
                 self.fail("This should never happen")
 
