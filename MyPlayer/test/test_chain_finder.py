@@ -299,3 +299,79 @@ class TestFilterInChain(unittest.TestCase):
         self.assertIn(20, result)
         self.assertNotIn(5, result)
         self.assertNotIn(15, result)
+
+
+class TestFindEdgeChains(unittest.TestCase):
+    def test_complete(self):
+        """
+        should return the entire edge chain (in a list for consistency: [[square1,square2]]) if it is complete
+        """
+        unplay_all(board)
+
+        edge_setter(const.STARTERS, const.PLAYED, board)
+
+        result = finder.find_edge_chains(board)
+        self.assertEqual(result, len(const.EDGE_CHAIN))
+        for square in const.EDGE_CHAIN:
+            self.assertIn(square, result[0])
+
+
+    def test_part(self):
+        """
+        should return all the parts of the edge chain
+        """
+        unplay_all(board)
+
+        edges = list(const.STARTERS)
+        edges.remove(20)
+        edges.remove(56)
+        edges.append(48)
+        edges.append(49)
+        edges.append(54)
+        edges.append(59)
+        edges.append(51)
+        edges.append(57)
+        edges.append(61)
+
+        result = finder.find_edge_chains(board)
+        self.assertEqual(len(result), 5)
+
+        six_chains = []
+
+        for chain in result:
+            chain_length = len(chain)
+            if chain_length == 7:
+                self.assertIn(4, chain)
+                self.assertIn(5, chain)
+                self.assertIn(6, chain)
+                self.assertIn(7, chain)
+                self.assertIn(16, chain)
+                self.assertIn(15, chain)
+                self.assertIn(24, chain)
+            elif chain_length == 2:
+                self.assertIn(36, chain)
+                self.assertIn(37, chain)
+            elif chain_length == 3:
+                self.assertIn(27, chain)
+                self.assertIn(33, chain)
+                self.assertIn(34, chain)
+            elif chain_length == 6:
+                six_chains.append(chain)
+            else:
+                self.fail("This should never happen")
+
+        self.assertEqual(len(six_chains), 2)
+        chain = six_chains[0]
+        if 0 in chain:
+            self.assertIn(1,chain)
+            self.assertIn(2,chain)
+            self.assertIn(9,chain)
+            self.assertIn(10,chain)
+            self.assertIn(19,chain)
+        else:
+            self.assertIn(20,chain)
+            self.assertIn(11,chain)
+            self.assertIn(12,chain)
+            self.assertIn(13,chain)
+            self.assertIn(14,chain)
+            self.assertIn(23,chain)
