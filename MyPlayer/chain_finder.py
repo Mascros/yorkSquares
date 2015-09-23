@@ -107,3 +107,94 @@ class ChainFinder():
                     chains.append(self.traverse(square, board))
 
         return chains
+
+
+    def _straight_in_chain(self, square, board):
+        for edge in board.Squares[square]:
+            if edge in const.STARTERS or edge in const.EDGE_OPPS:
+                if board.getEdgeState(edge) == const.PLAYED:
+                    return True
+
+        return False
+
+
+    def _intruding_in_chain(self, square, board):
+        played_count = 0
+        for edge in board.Squares[square]:
+            if edge in const.STARTERS:
+                if board.getEdgeState(edge) == const.PLAYED:
+                    played_count += 1
+
+        if played_count == 2:
+            return True
+        else: 
+            return False
+
+
+    def _extruding_in_chain(self, square, board):
+        for edge in board.Squares[square]:
+            two_squares = board.Edge2Squares[edge]
+            if type(two_squares) is tuple:
+                for two_square in two_squares:
+                    if two_square != square:
+                        if const.EDGE_CHAIN[two_square] == const.STRAIGHT:
+                            return self._straight_in_chain(two_square, board)
+                        elif const.EDGE_CHAIN[two_square] == const.INTRUDING:
+                            return self._intruding_in_chain(two_square, board)
+        
+
+
+    def find_edge_chains(self, board):
+        chains = []
+        current_chain = []
+
+        # points to the index in EDGE_CHAIN.keys() which holds the current square 
+        square_pointer = 0
+
+        for square in const.EDGE_SQUARES:
+            if const.EDGE_CHAIN[square] == const.STRAIGHT:
+                if self._straight_in_chain(square, board):
+                    current_chain.append(square)
+                elif len(current_chain) > 0:
+                    chains.append(current_chain)
+                    current_chain = []
+            elif const.EDGE_CHAIN[square] == const.INTRUDING:
+                if self._intruding_in_chain(square, board):
+                    current_chain.append(square)
+                elif len(current_chain) > 0:
+                    chains.append(current_chain)
+                    current_chain = []
+            else:
+                # Must be extruding
+                if self._extruding_in_chain(square, board):
+                    current_chain.append(square)
+                elif len(current_chain) > 0:
+                    chains.append(current_chain)
+                    current_chain = []
+
+            if square_pointer == 27:
+                next_square = list(const.EDGE_SQUARES)[0]
+            else:
+                next_square = list(const.EDGE_SQUARES)[square_pointer + 1]
+
+            if len(current_chain) > 0:
+                for edge in board.Squares[square]:
+                    two_squares = board.Edge2Squares[edge]
+                    if type(two_squares) is tuple:
+                        for two_square in two_squares:
+                            if two_square == next_square:
+                                if board.getEdgeState(edge) == const.PLAYED:
+                                    chains.append(current_chain)
+                                    current_chain = []
+
+            square_pointer += 1
+
+        if len(current_chain) > 0:
+            chains.append(current_chain)
+
+        # if the first chain startes with square 0 and the last chain ends with 9 then and edge 17 is unplayed join them into one chain
+        if chains[0][0] == 0 and chains[-1][-1] == 9 and board.getEdgeState(17) == const.UNPLAYED and len(chains) > 1:
+            chains[-1].extend(chains[0])
+            chains.pop(0)
+
+        return chains
