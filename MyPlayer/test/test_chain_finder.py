@@ -364,6 +364,11 @@ class TestExtrudingInChain(unittest.TestCase):
         board.setEdgeState(31, const.PLAYED)
         self.assertTrue(finder._extruding_in_chain(7, board))
         self.assertTrue(finder._extruding_in_chain(16, board))
+
+        unplay_all(board)
+        board.setEdgeState(18, const.PLAYED)
+        self.assertTrue(finder._extruding_in_chain(0, board))
+
     
 
     def test_false(self):
@@ -386,7 +391,7 @@ class TestFindEdgeChains(unittest.TestCase):
         edge_setter(const.STARTERS, const.PLAYED, board)
 
         result = finder.find_edge_chains(board)
-        self.assertEqual(result, len(const.EDGE_CHAIN))
+        self.assertEqual(len(result[0]), len(const.EDGE_CHAIN))
         for square in const.EDGE_CHAIN:
             self.assertIn(square, result[0])
 
@@ -407,12 +412,15 @@ class TestFindEdgeChains(unittest.TestCase):
         edges.append(51)
         edges.append(57)
         edges.append(61)
+        edges.append(37)
+
+        edge_setter(edges, const.PLAYED, board)
 
         result = finder.find_edge_chains(board)
-        self.assertEqual(len(result), 6)
 
+        one_chains = []
         six_chains = []
-
+        self.assertEqual(len(result), 7)
         for chain in result:
             chain_length = len(chain)
             if chain_length == 7:
@@ -423,32 +431,26 @@ class TestFindEdgeChains(unittest.TestCase):
                 self.assertIn(16, chain)
                 self.assertIn(15, chain)
                 self.assertIn(24, chain)
-            elif chain_length == 2:
-                self.assertIn(36, chain)
-                self.assertIn(37, chain)
-            elif chain_length == 3:
+            if chain_length == 3:
                 self.assertIn(27, chain)
                 self.assertIn(33, chain)
                 self.assertIn(34, chain)
-            elif chain_length == 6:
+            if chain_length == 6:
                 six_chains.append(chain)
-            elif chain_length == 1:
-                self.assertEqual([31, chain])
-            else:
-                self.fail("This should never happen")
+            if chain_length == 1:
+                one_chains.append(chain)
 
-        self.assertEqual(len(six_chains), 2)
-        chain = six_chains[0]
-        if 0 in chain:
-            self.assertIn(1,chain)
-            self.assertIn(2,chain)
-            self.assertIn(9,chain)
-            self.assertIn(10,chain)
-            self.assertIn(19,chain)
-        else:
-            self.assertIn(20,chain)
-            self.assertIn(11,chain)
-            self.assertIn(12,chain)
-            self.assertIn(13,chain)
-            self.assertIn(14,chain)
-            self.assertIn(23,chain)
+        self.assertIn([28], one_chains)
+        self.assertIn([31], one_chains)
+        self.assertIn([37], one_chains)
+
+        for chain in six_chains:
+            if 0 in chain:
+                self.assertIn(1,chain)
+                self.assertIn(2,chain)
+                self.assertIn(9,chain)
+                self.assertIn(10,chain)
+                self.assertIn(19,chain)
+                self.assertNotIn(11,chain)
+                self.assertNotIn(20,chain)
+
