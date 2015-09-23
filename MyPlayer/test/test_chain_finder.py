@@ -301,6 +301,81 @@ class TestFilterInChain(unittest.TestCase):
         self.assertNotIn(15, result)
 
 
+class TestStraighInChain(unittest.TestCase):
+    def test_true(self):
+        """
+        should return true when the straight has either its starter or opp edge played
+        """
+        unplay_all(board)
+        board.setEdgeState(21, const.PLAYED)
+        self.assertTrue(finder._straight_in_chain(4, board))
+        self.assertTrue(finder._straight_in_chain(13, board))
+        board.setEdgeState(46, const.PLAYED)
+        board.setEdgeState(47, const.PLAYED)
+        self.assertTrue(finder._straight_in_chain(23, board))
+        self.assertTrue(finder._straight_in_chain(24, board))
+        board.setEdgeState(52, const.PLAYED)
+        self.assertTrue(finder._straight_in_chain(27, board))
+
+
+    def test_false(self):
+        """
+        should return false when the straight is not in the chain
+        """
+        unplay_all(board)
+        board.setEdgeState(52, const.PLAYED)
+        self.assertFalse(finder._straight_in_chain(28, board))
+        self.assertFalse(finder._straight_in_chain(20, board))
+        board.setEdgeState(11, const.PLAYED)
+        self.assertFalse(finder._straight_in_chain(3, board))
+
+
+class TestIntrudingInChain(unittest.TestCase):
+    def test_true(self):
+        """
+        should return true when the intruding corner is in the chain
+        """
+        unplay_all(board)
+        board.setEdgeState(18, const.PLAYED)
+        board.setEdgeState(19, const.PLAYED)
+        board.setEdgeState(27, const.PLAYED)
+        self.assertTrue(finder._intruding_in_chain(10, board))
+        self.assertTrue(finder._intruding_in_chain(11, board))
+
+
+    def test_false(self):
+        """
+        should return false when the intruding corner is not in the chain
+        """
+        unplay_all(board)
+        board.setEdgeState(27, const.PLAYED)
+        self.assertFalse(finder._intruding_in_chain(10, board))
+        self.assertFalse(finder._intruding_in_chain(11, board))
+        self.assertFalse(finder._intruding_in_chain(15, board))
+
+
+class TestExtrudingInChain(unittest.TestCase):
+    def test_true(self):
+        """
+        should return true if the straight or intruding next to it is in the chain
+        """
+        unplay_all(board)
+        board.setEdgeState(23, const.PLAYED)
+        board.setEdgeState(31, const.PLAYED)
+        self.assertTrue(finder._extruding_in_chain(7, board))
+        self.assertTrue(finder._extruding_in_chain(16, board))
+    
+
+    def test_false(self):
+        """
+        should return false if the straight or intruding next to it is not in the chain
+        """
+        unplay_all(board)
+        board.setEdgeState(31, const.PLAYED)
+        self.assertFalse(finder._extruding_in_chain(7, board))
+        self.assertFalse(finder._extruding_in_chain(16, board))
+
+
 class TestFindEdgeChains(unittest.TestCase):
     def test_complete(self):
         """
