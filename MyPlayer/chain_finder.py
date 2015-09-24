@@ -111,7 +111,7 @@ class ChainFinder():
 
     def _straight_in_chain(self, square, board):
         for edge in board.Squares[square]:
-            if edge in const.STARTERS or edge in const.EDGE_OPPS:
+            if edge in const.STARTERS:
                 if board.getEdgeState(edge) == const.PLAYED:
                     return True
 
