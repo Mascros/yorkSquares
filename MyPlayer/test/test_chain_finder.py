@@ -301,7 +301,7 @@ class TestFilterInChain(unittest.TestCase):
         self.assertNotIn(15, result)
 
 
-class TestStraighInChain(unittest.TestCase):
+class TestStraightInChain(unittest.TestCase):
     def test_true(self):
         """
         should return true when the straight has either its starter or opp edge played
