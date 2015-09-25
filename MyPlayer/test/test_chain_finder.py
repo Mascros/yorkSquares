@@ -304,7 +304,7 @@ class TestFilterInChain(unittest.TestCase):
 class TestStraightInChain(unittest.TestCase):
     def test_true(self):
         """
-        should return true when the straight has either its starter or opp edge played
+        should return true when the straight has either its starter edge played
         """
         unplay_all(board)
         board.setEdgeState(21, const.PLAYED)
@@ -314,8 +314,6 @@ class TestStraightInChain(unittest.TestCase):
         board.setEdgeState(47, const.PLAYED)
         self.assertTrue(finder._straight_in_chain(23, board))
         self.assertTrue(finder._straight_in_chain(24, board))
-        board.setEdgeState(52, const.PLAYED)
-        self.assertTrue(finder._straight_in_chain(27, board))
 
 
     def test_false(self):
@@ -325,6 +323,7 @@ class TestStraightInChain(unittest.TestCase):
         unplay_all(board)
         board.setEdgeState(52, const.PLAYED)
         self.assertFalse(finder._straight_in_chain(28, board))
+        self.assertFalse(finder._straight_in_chain(27, board))
         self.assertFalse(finder._straight_in_chain(20, board))
         board.setEdgeState(11, const.PLAYED)
         self.assertFalse(finder._straight_in_chain(3, board))
@@ -417,13 +416,20 @@ class TestFindEdgeChains(unittest.TestCase):
         edge_setter(edges, const.PLAYED, board)
 
         result = finder.find_edge_chains(board)
+        print(result)
 
-        one_chains = []
-        six_chains = []
-        self.assertEqual(len(result), 7)
+        three_chains = []
+        self.assertEqual(len(result), 6)
         for chain in result:
             chain_length = len(chain)
-            if chain_length == 7:
+            if chain_length == 6:
+                self.assertIn(19, chain)
+                self.assertIn(10, chain)
+                self.assertIn(9, chain)
+                self.assertIn(0, chain)
+                self.assertIn(1, chain)
+                self.assertIn(2, chain)
+            elif chain_length == 7:
                 self.assertIn(4, chain)
                 self.assertIn(5, chain)
                 self.assertIn(6, chain)
@@ -431,26 +437,24 @@ class TestFindEdgeChains(unittest.TestCase):
                 self.assertIn(16, chain)
                 self.assertIn(15, chain)
                 self.assertIn(24, chain)
-            if chain_length == 3:
-                self.assertIn(27, chain)
-                self.assertIn(33, chain)
-                self.assertIn(34, chain)
-            if chain_length == 6:
-                six_chains.append(chain)
-            if chain_length == 1:
-                one_chains.append(chain)
+            elif chain_length == 3:
+                three_chains.append(chain)
+            elif chain_length == 1:
+                self.assertEqual([28], chain)
+            elif chain_length == 2:
+                self.assertIn(11, chain)
+                self.assertIn(20, chain)
 
-        self.assertIn([28], one_chains)
-        self.assertIn([31], one_chains)
-        self.assertIn([37], one_chains)
+        self.assertEqual(len(three_chains), 2)
+        for three_chain in three_chains:
+            if 23 in three_chain:
+                self.assertIn(14, three_chain)
+                self.assertIn(13, three_chain)
+            else:
+                self.assertIn(34, three_chain)
+                self.assertIn(33, three_chain)
+                self.assertIn(27, three_chain)
 
-        for chain in six_chains:
-            if 0 in chain:
-                self.assertIn(1,chain)
-                self.assertIn(2,chain)
-                self.assertIn(9,chain)
-                self.assertIn(10,chain)
-                self.assertIn(19,chain)
-                self.assertNotIn(11,chain)
-                self.assertNotIn(20,chain)
+
+            
 
