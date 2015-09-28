@@ -416,7 +416,6 @@ class TestFindEdgeChains(unittest.TestCase):
         edge_setter(edges, const.PLAYED, board)
 
         result = finder.find_edge_chains(board)
-        print(result)
 
         three_chains = []
         self.assertEqual(len(result), 6)
