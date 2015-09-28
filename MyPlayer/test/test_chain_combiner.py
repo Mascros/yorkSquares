@@ -1,11 +1,11 @@
 import unittest
 import const
-from chain_finder import ChainFinder
 from game_board import GameBoardADT
 from helper import edge_setter, unplay_all
+from combiner import Combiner
 
+combiner = Combiner()
 board = GameBoardADT()
-finder = ChainFinder()
 
 
 class TestCombine(unittest.TestCase):
@@ -21,7 +21,7 @@ class TestCombine(unittest.TestCase):
         edges = (1,9,26,27,42,43,52,53)
         edge_setter(edges, const.PLAYED, board)
 
-        result = finder._combine(chains, board)
+        result = combiner._combine(chains, board)
 
         if result[0] == 20:
             result.reverse()
@@ -39,13 +39,13 @@ class TestCombine(unittest.TestCase):
         edges = (20,21,22,23,39,40)
         edge_setter(edges, const.PLAYED, board)
 
-        result = finder._combine(chains, board)
+        result = combiner._combine(chains, board)
 
         if result[0] == 15:
             result.reverse()
 
         self.assertEqual(result, [12,13,14,15])
-        
+
 
     @unittest.skip("Move to test get_combined, ")
     def test_more_than_two(self):
