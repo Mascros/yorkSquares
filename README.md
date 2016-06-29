@@ -1,2 +1,2 @@
 # yorkSquares
-I was in a rush so the code and commit messages get bad at the end
+My solution is found in the MyPlayer folder. We had to design a program to play the pen and paper game dots and squares.
