@@ -8,3 +8,6 @@ def edge_setter(edges, state, board):
 def unplay_all(board):
     for edge in range(72):
         board.setEdgeState(edge, const.UNPLAYED)
+
+def hi():
+    return "hi"
